@@ -1,0 +1,19 @@
+#linkForm > .youtubeLink {
+    margin-left: 20px;
+    padding: 10px;
+    background-color:#1c1c1a;
+    color: white;
+}
+
+#linkForm > .submitButton {
+    padding: 10px;
+    background-color:#1c1c1a;
+    color: white;
+}
+
+#linkForm > #errorText {
+    margin-top: 10px;
+    color: red;
+    font-size: max(18px, 1.2vw);
+    
+}
