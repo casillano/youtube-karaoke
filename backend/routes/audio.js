@@ -17,7 +17,7 @@ router.post('/', function(req, res) {
         var stream = video.pipe(file);
         stream.on('finish', function() {
             file.close();
-            res.status(200).sendFile('./aux_files/song.mp3');
+            res.status(200).sendFile(path.join(__dirname, "../aux_files", "song.mp3"));
         })
         stream.on('error', function() {
             res.status(500).send("Error writing to audio file");
