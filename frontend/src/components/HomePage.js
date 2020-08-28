@@ -10,8 +10,7 @@ class HomePage extends Component {
         super(props);
         this.state = {
             youtubeLink:"https://www.youtube.com/watch?v=E-DRkixL3rA",
-            error: "",
-            redirect: false
+            error: ""
         }
         this.handleFocus = this.handleFocus.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -47,8 +46,12 @@ class HomePage extends Component {
                         var title = data.items[0].snippet.title;
                         var titleRegExp = /[\w ]+ ?- ?[\w]+/;
                         if (titleRegExp.test(title)) {
-                            // title matches required format, send api request
-                            this.setState({error: "", redirect: true});
+                            // title matches required format, send api requests on next page
+                            this.setState({error: ""});
+                            this.props.history.push({
+                                pathname: '/loading',
+                                state: {link: url}
+                            })
                         } else {
                             // title does not match requred format
                             this.setState({error: "Title does not match required format"});
@@ -67,21 +70,14 @@ class HomePage extends Component {
     }
 
     render() {
-        if (this.state.redirect) {
-            return <Redirect to={{
-                pathname: "/loading",
-                state: {link: this.state.youtubeLink}
-             }} 
-             />
-        }
         return(
             <div class="homePage">
                 <h1>Youtube Karaoke</h1>
-                <div class="d-flex justify-content-center align-items-center">
+                <div className="d-flex justify-content-center align-items-center">
                     <form id="linkForm" onSubmit={this.handleSubmit}>
-                        <label for="youtubeLink">Paste youtube link here:</label>
+                        <label htmlFor="youtubeLink">Paste youtube link here:</label>
                         <input type="text" name="youtubeLink"
-                        class="youtubeLink"
+                        className="youtubeLink"
                         size="43" 
                         value={this.state.youtubeLink}
                         onChange={this.handleChange}

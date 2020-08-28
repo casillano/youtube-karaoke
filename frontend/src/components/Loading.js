@@ -52,7 +52,13 @@ export default class Loading extends React.Component {
         this.transcript = null;
         this.alignedText = null;
 
+
         this.fetchLyricsOrAudio = this.fetchLyricsOrAudio.bind(this);
+    }
+
+    // TODO: send request to delete server files
+    componentWillUnmount() {
+
     }
 
     componentDidMount() {
@@ -60,39 +66,53 @@ export default class Loading extends React.Component {
             .then(response => {
                 if (response.status === 200) {
                     this.setState({ lyricsDone: true });
+                    return response.blob();
                 } else {
                     this.setState({ lyricsError: true });
                     throw new Error("Error fetching lyrics");
                 }
             })
+            .then((myBlob) => {
+                this.transcript = URL.createObjectURL(myBlob);
+            })
             .then(devnull => this.fetchLyricsOrAudio("audio"))
             .then(response => {
-                if (response.status === 200) {
-                    this.setState({ audioDone: true })
+                if (response.status === 200) { 
+                    this.setState({ audioDone: true });
+                    return response.blob();
                 } else {
                     this.setState({ audioError: true });
                     throw new Error("Error fetching audio");
                 }
             })
+            .then((myBlob)  => {
+                this.audio = URL.createObjectURL(myBlob);
+                
+            })
             .then(devnull => this.fetchAligner())
             .then(response => {
                 if (response.status === 200) {
                     this.setState({ alignerDone: true })
-                    setTimeout(() => {
-                        this.setState({doneAll : true})
-                    }, 1500);
+                    return response.blob();
                 } else {
                     this.setState({ alignerError: true });
                     throw new Error("Error fetching aligner");
                 }
+            }).then((myBlob) => {
+                    this.alignedText = URL.createObjectURL(myBlob);
+                    setTimeout(() => {
+                        this.setState({doneAll : true})
+                    }, 1000);
+
             })
             .catch(error => {
+
                 this.setState({
                     lyricsError: this.state.lyricsDone ? false : true,
                     audioError: this.state.audioDone ? false : true,
                     alignerError: this.state.alignerDone ? false : true
                 })
-                console.log(error.message);
+                alert(error.message);
             })
     }
 
@@ -127,7 +147,7 @@ export default class Loading extends React.Component {
         return (
             <div>
                 <FadeIn>
-                    <div class="d-flex justify-content-center align-items-center">
+                    <div className="d-flex justify-content-center align-items-center">
                         <LoadingInformation
                             info="fetching lyrics"
                             ready={true}
@@ -140,7 +160,7 @@ export default class Loading extends React.Component {
                 </FadeIn>
 
                 <FadeIn>
-                    <div class="d-flex justify-content-center align-items-center">
+                    <div className="d-flex justify-content-center align-items-center">
                         <LoadingInformation
                             info="fetching audio"
                             ready={this.state.lyricsDone}
