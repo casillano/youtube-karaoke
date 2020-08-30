@@ -66,18 +66,26 @@ export default class Loading extends React.Component {
             .then(response => {
                 if (response.status === 200) {
                     this.setState({ lyricsDone: true });
-                    return response.blob();
+                    return response.text();
                 } else {
                     this.setState({ lyricsError: true });
                     throw new Error("Error fetching lyrics");
                 }
             })
-            .then((myBlob) => {
-                this.transcript = URL.createObjectURL(myBlob);
+            .then((text) => {
+                var wordLst = text.split('\n');
+                for (var i = wordLst.length-1; i >= 0; i--) {
+                    if (wordLst[i] === "") {
+                        wordLst.splice(i,1);
+                    } else {
+                        wordLst[i] = wordLst[i].split(/-| /);
+                    }
+                }
+                this.transcript = wordLst;
             })
             .then(devnull => this.fetchLyricsOrAudio("audio"))
             .then(response => {
-                if (response.status === 200) { 
+                if (response.status === 200) {
                     this.setState({ audioDone: true });
                     return response.blob();
                 } else {
@@ -85,24 +93,23 @@ export default class Loading extends React.Component {
                     throw new Error("Error fetching audio");
                 }
             })
-            .then((myBlob)  => {
+            .then((myBlob) => {
                 this.audio = URL.createObjectURL(myBlob);
-                
             })
             .then(devnull => this.fetchAligner())
             .then(response => {
                 if (response.status === 200) {
                     this.setState({ alignerDone: true })
-                    return response.blob();
+                    return response.json();
                 } else {
                     this.setState({ alignerError: true });
                     throw new Error("Error fetching aligner");
                 }
-            }).then((myBlob) => {
-                    this.alignedText = URL.createObjectURL(myBlob);
-                    setTimeout(() => {
-                        this.setState({doneAll : true})
-                    }, 1000);
+            }).then((jsonText) => {
+                this.alignedText = jsonText.words;
+                setTimeout(() => {
+                    this.setState({ doneAll: true })
+                }, 1000);
 
             })
             .catch(error => {
@@ -140,8 +147,13 @@ export default class Loading extends React.Component {
 
         if (this.state.doneAll) {
             return <Redirect to={{
-                pathname: "/karaoke"
-            }}/>
+                pathname: "/karaoke",
+                state: {
+                    audio: this.audio,
+                    transcript: this.transcript,
+                    alignedText: this.alignedText
+                }
+            }} />
         }
 
         return (

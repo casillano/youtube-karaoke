@@ -30,7 +30,8 @@ router.post("/", function(req, res) {
         }).then((response) => {
             if (response.ok) {
                 response.json().then((data) => {
-                    res.status(200).send(data.words);
+                    res.setHeader('Content-Type', 'application/json');
+                    res.status(200).send(data);
                 })
             } else {
                 res.status(500).send("request to aligner failed");

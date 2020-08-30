@@ -71,7 +71,7 @@ class HomePage extends Component {
 
     render() {
         return(
-            <div class="homePage">
+            <div className="homePage">
                 <h1>Youtube Karaoke</h1>
                 <div className="d-flex justify-content-center align-items-center">
                     <form id="linkForm" onSubmit={this.handleSubmit}>
@@ -83,7 +83,7 @@ class HomePage extends Component {
                         onChange={this.handleChange}
                         onFocus={this.handleFocus} required/>
                         <p id="errorText">{this.state.error}</p>
-                        <input class="submitButton"type="submit" value="Submit" />
+                        <input className="submitButton"type="submit" value="Submit" />
                     </form>
                 </div>
             </div>
