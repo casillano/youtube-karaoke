@@ -57,7 +57,6 @@ router.post("/", function(req, res) {
 })
 
 function deleteFiles() {
-    console.log("nigga we made it");
     if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
         fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
     }
