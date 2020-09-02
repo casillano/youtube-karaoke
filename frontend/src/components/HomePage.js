@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./css/styles.css";
-import { Redirect } from "react-router-dom";
 const key = require('../secrets/secrets').key;
 
 class HomePage extends Component {

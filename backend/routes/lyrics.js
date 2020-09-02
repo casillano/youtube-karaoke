@@ -56,8 +56,12 @@ router.post("/", function (req, res, next) {
         .then(sanitizedLyrics => fsPromise.writeFile("./aux_files/words.txt",
             sanitizedLyrics.toString()))
         .then(console.log("written to file"))
-        .then(res.status(200).sendFile(path.join(__dirname, "../aux_files", "words.txt"),
-        {headers: {'Content-Type': 'text/plain'}}))
+        .then(
+            setTimeout(() => {
+            res.status(200).sendFile(path.join(__dirname, "../aux_files", "words.txt"),
+            {headers: {'Content-Type': 'text/plain'}})
+            }, 1000)
+        )
         .catch(function (err) {
             console.log(err);
             res.status(500).send("Could not write lyrics to file");
