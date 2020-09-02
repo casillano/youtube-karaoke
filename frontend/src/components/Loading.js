@@ -51,6 +51,7 @@ export default class Loading extends React.Component {
         this.audio = null;
         this.transcript = null;
         this.alignedText = null;
+        this.controller = new AbortController();
 
 
         this.fetchLyricsOrAudio = this.fetchLyricsOrAudio.bind(this);

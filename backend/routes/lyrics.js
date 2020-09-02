@@ -8,6 +8,14 @@ const fsPromise = require('fs').promises;
 const geniusKey = require('../secrets/secrets').geniusKey;
 
 router.post("/", function (req, res, next) {
+    req.on('close', function(err) {
+        if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
+            fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
+        }
+        if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
+            fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
+        }
+    })
     var url = req.body.url;
     youtubedl.getInfo(url, function (err, info) {
         // handle errors here

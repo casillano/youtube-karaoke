@@ -6,7 +6,6 @@ var logger = require('morgan');
 var lyrics = require('./routes/lyrics');
 var aligner = require('./routes/aligner');
 var audio = require('./routes/audio');
-
 const bodyParser = require('body-parser');
 
 var app = express();
