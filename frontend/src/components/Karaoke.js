@@ -10,9 +10,7 @@ export default class Karaoke extends React.Component {
             startTime: undefined,
             remainingTime: 0,
             intervalId: undefined,
-            text: null,
             currWord: -1,
-            currLine: null,
             prevWordFinished: true
         };
 
@@ -23,7 +21,6 @@ export default class Karaoke extends React.Component {
         this.index2 = 0;
         this.wordIndex = 0;
         this.line = [];
-        this.display = "";
 
     }
 
@@ -73,7 +70,7 @@ export default class Karaoke extends React.Component {
 
                         console.log(this.line[this.wordIndex]);
                         console.log(this.index2)
-                        this.setState({ currWord: this.wordIndex, prevWordFinished: false})
+                        this.setState({ currWord: this.wordIndex, prevWordFinished: false })
                         this.index += 1;
                         this.wordIndex += 1;
                     }
@@ -85,30 +82,30 @@ export default class Karaoke extends React.Component {
                     this.wordIndex += 1;
                 }
             } else {
-                if ((this.props.location.state.alignedText[this.index-1].end - this.state.currentDuration) < Number.EPSILON) {
-                    this.setState({prevWordFinished: true});
-                } 
+                if ((this.props.location.state.alignedText[this.index - 1].end - this.state.currentDuration) < Number.EPSILON) {
+                    this.setState({ prevWordFinished: true });
+                }
             }
-            
+
             if (this.wordIndex >= this.line.length) {
-                var lastWord = this.props.location.state.alignedText[this.index-1];
+                var lastWord = this.props.location.state.alignedText[this.index - 1];
                 if (lastWord.case === "success") {
                     //var lastWordTime = Math.round((lastWord.end + 0.00001) * 100) / 100;
                     if ((lastWord.end - this.state.currentDuration) < Number.EPSILON) {
-                        this.setState({currWord: -1})
+                        this.setState({ currWord: -1 })
                         this.wordIndex = 0;
                         this.index2 += 1;
                     }
                 } else {
-                    this.setState({currWord: -1})
+                    this.setState({ currWord: -1 })
                     this.wordIndex = 0;
                     this.index2 += 1;
                 }
             }
-            
+
         } else {
             this.line = [];
-            this.setState({currWord: null})
+            this.setState({ currWord: null })
         }
 
     }

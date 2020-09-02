@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var path = require('path');
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs');
@@ -45,6 +46,7 @@ router.post("/", function(req, res) {
             .finally(() => {
                 audio.close();
                 transcript.close();
+                deleteFiles();
             })
     });
     audio.on('error', function (err) {
@@ -53,5 +55,15 @@ router.post("/", function(req, res) {
     });
 
 })
+
+function deleteFiles() {
+    console.log("nigga we made it");
+    if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
+        fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
+    }
+    if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
+        fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
+    }
+}
 
 module.exports = router

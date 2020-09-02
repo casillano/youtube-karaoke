@@ -56,10 +56,6 @@ export default class Loading extends React.Component {
         this.fetchLyricsOrAudio = this.fetchLyricsOrAudio.bind(this);
     }
 
-    // TODO: send request to delete server files
-    componentWillUnmount() {
-
-    }
 
     componentDidMount() {
         this.fetchLyricsOrAudio("lyrics")
@@ -74,9 +70,9 @@ export default class Loading extends React.Component {
             })
             .then((text) => {
                 var wordLst = text.split('\n');
-                for (var i = wordLst.length-1; i >= 0; i--) {
+                for (var i = wordLst.length - 1; i >= 0; i--) {
                     if (wordLst[i] === "") {
-                        wordLst.splice(i,1);
+                        wordLst.splice(i, 1);
                     } else {
                         wordLst[i] = wordLst[i].split(/-| /);
                     }
