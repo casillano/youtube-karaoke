@@ -3,6 +3,7 @@ var router = express.Router();
 var path = require('path');
 const youtubedl = require('youtube-dl');
 const fs = require('fs');
+const pathToFfmpeg = require('../secrets/secrets').pathToFfmpeg;
 
 router.post('/', function(req, res) {
     req.on('close', function(err) {
@@ -15,7 +16,7 @@ router.post('/', function(req, res) {
     })
     var url = req.body.url;
     youtubedl.exec(url,
-    ['-f', 'bestaudio', '--extract-audio', '--audio-format', 'mp3', '--audio-quality', '0', '-o', "./aux_files/song.mp3", '--prefer-ffmpeg', '--ffmpeg-location', "/home/dom/bin/ffmpeg"],
+    ['-f', 'bestaudio', '--extract-audio', '--audio-format', 'mp3', '--audio-quality', '0', '-o', "./aux_files/song.mp3", '--prefer-ffmpeg', '--ffmpeg-location', pathToFfmpeg],
     {}, function(err, output) {
         if (err) {
             console.log(err);
