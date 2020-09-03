@@ -85,6 +85,14 @@ class HomePage extends Component {
                         <input className="submitButton"type="submit" value="Submit" />
                     </form>
                 </div>
+                <div className="d-flex justify-content-center align-items-center">
+                    <p id="infoSection"> For usage and issues, check out the github repo<br></br>
+                    <a target="_blank" rel="noopener noreferrer" 
+                    href="https://github.com/casillano/youtube-karaoke">
+                        <img alt="github link" src='./ghlogo.png' width="100px" height="30px"></img>
+                    </a>
+                    </p>
+                </div>
             </div>
         )
     }

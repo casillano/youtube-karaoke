@@ -121,7 +121,7 @@ export default class Loading extends React.Component {
 
                 setTimeout(() => {
                     this.props.history.goBack();
-                }, 2000)
+                }, 3500)
             })
     }
 

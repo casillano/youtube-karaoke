@@ -47,7 +47,7 @@ router.post("/", function(req, res) {
             .finally(() => {
                 audio.close();
                 transcript.close();
-                deleteFiles();
+                //deleteFiles();
             })
     });
     audio.on('error', function (err) {

@@ -8,14 +8,14 @@ const fsPromise = require('fs').promises;
 const geniusKey = require('../secrets/secrets').geniusKey;
 
 router.post("/", function (req, res, next) {
-    req.on('close', function(err) {
-        if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
-            fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
-        }
-        if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
-            fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
-        }
-    })
+    // req.on('close', function(err) {
+    //     if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
+    //         fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
+    //     }
+    //     if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
+    //         fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
+    //     }
+    // })
     var url = req.body.url;
     youtubedl.getInfo(url, function (err, info) {
         // handle errors here
@@ -24,9 +24,9 @@ router.post("/", function (req, res, next) {
             res.status(500).send("youtube-dl error");
         } else {
             var fields = info.title.split('-');
-            var artist = sanitizeArtistOrTitle(fields[0].trim());
+            var artist = sanitizeArtistOrTitle(fields[0].trim()).replace(/'|,/g, '');
             // TODO: handle possibility of - in artist/song name
-            var title = sanitizeArtistOrTitle(fields[1].trim());
+            var title = sanitizeArtistOrTitle(fields[1].trim()).replace(/'|,/g, '');
 
             const options = {
                 apiKey: geniusKey,
@@ -41,13 +41,16 @@ router.post("/", function (req, res, next) {
                     // check if the name of the song and artist are in the url 
                     // since the api seems to return a random lyric page
                     // when the actual page cannot be found
-                    var titleAndArtist = urlFields[3].split('-').join(' ').toLowerCase();
+                    var titleAndArtist = urlFields[3].split('-').join(' ').toLowerCase().replace(/'|,/g, '')
+                    console.log(titleAndArtist)
                     if (titleAndArtist.includes(artist.toLowerCase()) &&
                         titleAndArtist.includes(title.toLowerCase())) {
                         // get the lyrics and write to a file
                         req.options = options;
                         next();
                     } else {
+                        console.log(artist)
+                        console.log(title);
                         res.status(500).send("genius API error on retrieving lyrics");
                     }
 
