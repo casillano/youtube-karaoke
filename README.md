@@ -3,6 +3,8 @@
 ![](karaoke.gif)
 
 # How to Use
+Paste a link to a youtube music video and this app will magically create a karaoke experience from it.
+
 For the application to work properly, the title of the given youtube video must be in the form {Artist}-{Song_Name}. It's okay if there are extra bits as long as the main information is where it's supposed to be.\
 Examples:
 * Watsky-Ten Fingers
