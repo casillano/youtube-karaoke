@@ -45,7 +45,8 @@ export default class Loading extends React.Component {
             lyricsError: false,
             alignerDone: false,
             alignerError: false,
-            doneAll: false
+            doneAll: false,
+            errorMessage: ""
         }
 
         this.audio = null;
@@ -114,9 +115,13 @@ export default class Loading extends React.Component {
                 this.setState({
                     lyricsError: this.state.lyricsDone ? false : true,
                     audioError: this.state.audioDone ? false : true,
-                    alignerError: this.state.alignerDone ? false : true
+                    alignerError: this.state.alignerDone ? false : true,
+                    errorMessage: error.message
                 })
-                alert(error.message);
+
+                setTimeout(() => {
+                    this.props.history.goBack();
+                }, 2000)
             })
     }
 
@@ -193,6 +198,8 @@ export default class Loading extends React.Component {
                             errorAnimationOptions={errorAnimationOptions} />
                     </div>
                 </FadeIn>
+
+                <h4>{this.state.errorMessage}</h4>
             </div>
 
         )

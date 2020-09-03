@@ -6,6 +6,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 
 router.post("/", function(req, res) {
+    req.on('close', deleteFiles);
     var data = FormData();
     var audio = fs.createReadStream("./aux_files/song.mp3");
     var transcript = fs.createReadStream("./aux_files/words.txt");

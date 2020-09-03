@@ -6,9 +6,24 @@
 }
 
 #linkForm > .submitButton {
-    padding: 10px;
-    background-color:#1c1c1a;
-    color: white;
+    display: inline-block;
+    background: #1c1c1a;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 23px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    -webkit-transition: all ease-in-out 300ms;
+    transition: all ease-in-out 300ms;
+}
+
+#linkForm > .submitButton:hover {
+    box-shadow: 0px 37px 20px -20px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translate(0px, -7px) scale(1.1);
+            transform: translate(0px, -7px) scale(1.1);
+
 }
 
 #linkForm > #errorText {
@@ -16,4 +31,65 @@
     color: red;
     font-size: max(18px, 1.2vw);
     
+}
+
+#audioControls {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    padding-left: 60px;
+    padding-top: 40px;
+}
+
+/* #audioControls > button {
+    margin-bottom: 10px;
+} */
+
+#audioControls > p {
+    font-size: max(1.3vw, 20px);
+}
+
+#audioControls > button {
+    display: inline-block;
+    background: #4285f4;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 23px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    -webkit-transition: all ease-in-out 300ms;
+    transition: all ease-in-out 300ms;
+  }
+
+#audioControls > button:hover {
+    box-shadow: 0px 37px 20px -20px rgba(0, 0, 0, 0.2);
+    -webkit-transform: translate(0px, -7px) scale(1.1);
+            transform: translate(0px, -7px) scale(1.1);
+  }
+
+  #karaoke > video { 
+      height: 70vh;
+      z-index: 0;
+  }
+
+  #karaoke > p {
+      position: relative;
+      bottom: 10vh;
+      z-index: 1;
+      max-width: 1000px;
+      min-width: 1000px;
+      text-align: center;
+      margin: 0 auto;
+  }
+
+  .wordDone {
+      font-family: "Arial Black", Gadget, sans-serif;
+      -webkit-text-stroke: 2px black;
+      color: red;
+  }
+
+  .wordNotDone {
+    font-family: "Arial Black", Gadget, sans-serif;
+    -webkit-text-stroke: 2px black;
 }

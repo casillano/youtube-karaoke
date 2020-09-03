@@ -1,4 +1,6 @@
 import React from 'react';
+import "bootstrap/dist/css/bootstrap.css";
+import "./css/styles.css";
 
 export default class Karaoke extends React.Component {
     constructor(props) {
@@ -11,16 +13,23 @@ export default class Karaoke extends React.Component {
             remainingTime: 0,
             intervalId: undefined,
             currWord: -1,
-            prevWordFinished: true
+            prevWordFinished: true,
+            totalDuration: "0:00",
+            playing: false
         };
-
-        this.playing = this.playing.bind(this);
-        this.paused = this.paused.bind(this);
 
         this.index = 0;
         this.index2 = 0;
         this.wordIndex = 0;
         this.line = [];
+
+        this.playing = this.playing.bind(this);
+        this.paused = this.paused.bind(this);
+        this.ended = this.ended.bind(this);
+        this.playAudio = this.playAudio.bind(this);
+        this.pauseAudio = this.pauseAudio.bind(this);
+        this.audioRef = React.createRef();
+        this.videoRef = React.createRef();
 
     }
 
@@ -54,6 +63,46 @@ export default class Karaoke extends React.Component {
             this.setState({ remainingTime: remainingTime })
         }
     }
+
+    ended() {
+        clearInterval(this.state.intervalId);
+        this.setState({
+            intervalId: null,
+            started: false,
+            startTime: null, currWord: -1,
+            currentDuration: parseFloat(0),
+            playing: false
+        });
+        this.index = 0;
+        this.index2 = 0;
+        this.wordIndex = 0;
+        this.line = [];
+        this.videoRef.current.pause();
+    }
+
+    playAudio() {
+        this.setState({ playing: true });
+        var audio = this.audioRef.current;
+        var video = this.videoRef.current;
+        if (audio.duration) {
+            if (this.state.totalDuration === "0:00") {
+                var minutes = Math.floor(audio.duration / 60);
+                var seconds = ('0' + (audio.duration % 60).toFixed(0)).slice(-2);
+                this.setState({ totalDuration: `${minutes}:${seconds}` })
+            }
+        }
+        audio.play();
+        video.play();
+    }
+
+    pauseAudio() {
+        this.setState({ playing: false })
+        var audio = this.audioRef.current;
+        var video = this.videoRef.current;
+        audio.pause();
+        video.pause();
+    }
+
 
     karaokeText() {
 
@@ -110,30 +159,54 @@ export default class Karaoke extends React.Component {
 
     }
 
+
     render() {
 
+        var audioEvent;
+        var buttonText;
+        if (this.state.playing) {
+            audioEvent = this.pauseAudio;
+            buttonText = "Pause";
+        } else {
+            audioEvent = this.playAudio;
+            buttonText = "Play";
+        }
         return (
             <React.Fragment>
+            <div className="d-flex flex-column">
                 <audio
-                    controls="controls"
+                    id="audio"
+                    ref={this.audioRef}
                     src={this.props.location.state.audio}
                     type="audio/mpeg"
                     preload="auto"
                     onPlaying={this.playing}
                     onPause={this.paused}
-                    onEnded={() => {
-                        this.setState({ currentDuration: parseFloat(0) })
-                    }}
+                    onEnded={this.ended}
                 />
-                <p>{this.line.map((word, i) => {
-                    if (this.state.currWord >= i) {
-                        return (<span key={i} style={{ color: 'red' }}>{word + " "}</span>)
-                    } else {
-                        return (<span key={i}>{word + " "}</span>)
-                    }
-                })}
-                </p>
-            </React.Fragment>
+
+                <div id="audioControls">
+                    <button onClick={audioEvent}>{buttonText}</button>
+                    <p>{Math.floor(this.state.currentDuration / 60)}:
+                    {('0' + (this.state.currentDuration.toFixed(0) % 60).toFixed(0)).slice(-2)}
+                    - {this.state.totalDuration}</p>
+                </div>
+            </div>
+                <div id="karaoke">
+                    <video ref={this.videoRef} autoplay muted loop>
+                        <source src="http://localhost:9000/video/video.mp4" />
+                        Your browser does not support mp4 video.
+                    </video>
+                    <p>{this.line.map((word, i) => {
+                        if (this.state.currWord >= i) {
+                            return (<span key={i} className="wordDone">{word + " "}</span>)
+                        } else {
+                            return (<span key={i} className="wordNotDone">{word + " "}</span>)
+                        }
+                    })}
+                    </p>
+                </div>
+                </React.Fragment>
         )
     }
 }

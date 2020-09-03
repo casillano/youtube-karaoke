@@ -68,7 +68,7 @@ router.post("/", function (req, res, next) {
             setTimeout(() => {
                 res.status(200).sendFile(path.join(__dirname, "../aux_files", "words.txt"),
                     { headers: { 'Content-Type': 'text/plain' } })
-            }, 2000)
+            }, 2500)
         )
         .catch(function (err) {
             console.log(err);
