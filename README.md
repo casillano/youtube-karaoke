@@ -11,17 +11,19 @@ The aligner depends on accurate lyrics from Genius to work properly. **If the ly
 
 
 # Installation
-This project uses the [gentle forced aligner](https://github.com/lowerquality/gentle). Using the Docker image is recommended.
+This project uses the [gentle forced aligner](https://github.com/lowerquality/gentle). Using the Docker image is recommended. Also ensure that [FFmpeg](https://ffmpeg.org/) is installed on your local system.
 
 # Usage
 1. Start up the [gentle forced aligner](https://github.com/lowerquality/gentle#using-gentle). Ensure that the aligner is listening at http://localhost:8765.
 If you are using the docker image, run 
 `docker run -p 8765:8765 lowerquality/gentle`.
 
-2. Download the source code. Get a [Genius API key](https://docs.genius.com/). Navigate to `/backend/secrets`, create `secrets.js`, and paste the following:
+2. Download the source code. Get a [Genius API key](https://docs.genius.com/). Then, find the path to your `ffmpeg` binary files. Navigate to `/backend/secrets`, create `secrets.js`, and paste the following:
 ```
 const geniusKey = 'API_KEY_HERE';
+const pathToffmpeg = 'PATH_TO_FFMPEG_HERE'
 exports.geniusKey = geniusKey;
+exports.pathToFfmpeg = pathToffmpeg
 ```
 
 3. Get a [Youtube Data API v3 key](https://console.developers.google.com). Navigate to `/frontend/src/secrets`, create `secrets.js`, and paste the following:
