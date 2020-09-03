@@ -1,6 +1,6 @@
 # youtube-karaoke
 
-![](karaoke.gif)
+![](karaoke2.gif)
 
 # How to Use
 Paste a link to a youtube music video and this app will magically create a karaoke experience from it.
