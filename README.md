@@ -1,5 +1,7 @@
 # youtube-karaoke
 
+![](karaoke.gif)
+
 # How to Use
 For the application to work properly, the title of the given youtube video must be in the form {Artist}-{Song_Name}. It's okay if there are extra bits as long as the main information is where it's supposed to be.\
 Examples:
