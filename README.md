@@ -1,5 +1,13 @@
 # youtube-karaoke
 
+# How to Use
+For the application to work properly, the title of the given youtube video must be in the form {Artist}-{Song_Name}. It's okay if there are extra bits as long as the main information is where it's supposed to be.\
+Examples:
+* Watsky-Ten Fingers
+* Grover Washington Jr. - Just the Two of Us (feat. Bill Withers) (Official Audio)
+* Bobby McFerrin - Don't Worry Be Happy (Official Video)
+
+
 # Installation
 This project uses the [gentle forced aligner](https://github.com/lowerquality/gentle). Using the Docker image is recommended.
 
