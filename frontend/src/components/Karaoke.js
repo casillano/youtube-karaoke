@@ -17,9 +17,11 @@ export default class Karaoke extends React.Component {
             totalDuration: "0:00",
             playing: false
         };
-
+        // index for aligned words json
         this.index = 0;
+        // index for current line in transcript
         this.index2 = 0;
+        // index for current word in the current line
         this.wordIndex = 0;
         this.line = [];
 
@@ -35,13 +37,17 @@ export default class Karaoke extends React.Component {
 
     playing() {
         if (!this.state.started) {
+            // set the start time in order to calculate time passed
             this.setState({ startTime: Date.now() });
         }
         var delay = this.state.remainingTime;
+        // set a timeout to make up for the remaining time from when the audio was
+        // stopped
         setTimeout(() => {
             var newDuration = parseFloat(this.state.currentDuration + parseFloat(0.01));
             this.setState({ currentDuration: newDuration, remainingTime: 0 });
             this.karaokeText();
+            // update the time every 10ms
             var intervalId = setInterval(() => {
                 var newDuration = parseFloat(this.state.currentDuration + parseFloat(0.01));
                 this.setState({ currentDuration: newDuration });
@@ -58,12 +64,14 @@ export default class Karaoke extends React.Component {
             this.setState({ intervalId: null })
         }
         var currTime = Date.now() - this.state.startTime;
+        // check if the audio was paused in the middle of the 10ms intervals
         var remainingTime = Math.round((currTime % 0.01) * 1000)
         if (remainingTime > 0) {
             this.setState({ remainingTime: remainingTime })
         }
     }
 
+    // reset everything when the audio has finished
     ended() {
         clearInterval(this.state.intervalId);
         this.setState({
@@ -85,6 +93,8 @@ export default class Karaoke extends React.Component {
         var audio = this.audioRef.current;
         var video = this.videoRef.current;
         if (audio.duration) {
+            // split up the duration of the audio into minutes and seconds
+            // to display to the user
             if (this.state.totalDuration === "0:00") {
                 var minutes = Math.floor(audio.duration / 60);
                 var seconds = ('0' + (audio.duration % 60).toFixed(0)).slice(-2);
@@ -105,25 +115,23 @@ export default class Karaoke extends React.Component {
 
 
     karaokeText() {
-
-        // var floorTime = Math.floor((this.state.currentDuration + 0.00001) * 100) / 100;
-        // var ceilTime = Math.ceil((this.state.currentDuration + 0.00001) * 100) / 100;
-
+        // check if the end of the transcript has been reached
         if (this.index2 < this.props.location.state.transcript.length) {
             this.line = this.props.location.state.transcript[this.index2];
+            // check if the duration of the previous page has ended
             if (this.state.prevWordFinished) {
                 var wordInfo = this.props.location.state.alignedText[this.index];
+                // check if the aligner was successful in aligning the current word
                 if (wordInfo.case === "success") {
-                    // var wordTime = Math.round((wordInfo.start + 0.00001) * 100) / 100
+                    // highlight the word when its start time matches the current time
                     if ((wordInfo.start - this.state.currentDuration) < Number.EPSILON) {
-
-                        console.log(this.line[this.wordIndex]);
-                        console.log(this.index2)
                         this.setState({ currWord: this.wordIndex, prevWordFinished: false })
                         this.index += 1;
                         this.wordIndex += 1;
                     }
                 } else {
+                    // word wasn't aligned, so highlight immediately and move on
+                    // to the next word
                     console.log(this.line[this.wordIndex]);
                     console.log(this.index2)
                     this.setState({ currWord: this.wordIndex });
@@ -131,15 +139,19 @@ export default class Karaoke extends React.Component {
                     this.wordIndex += 1;
                 }
             } else {
+                // check if the end time of the previous word matches the current time
                 if ((this.props.location.state.alignedText[this.index - 1].end - this.state.currentDuration) < Number.EPSILON) {
                     this.setState({ prevWordFinished: true });
                 }
             }
 
+            // check if the last word of the current line has been reached and
+            // move onto the next line of the transcript
             if (this.wordIndex >= this.line.length) {
                 var lastWord = this.props.location.state.alignedText[this.index - 1];
+                // on successful alignment, wait until the last word has ended
+                // before moving onto the next line
                 if (lastWord.case === "success") {
-                    //var lastWordTime = Math.round((lastWord.end + 0.00001) * 100) / 100;
                     if ((lastWord.end - this.state.currentDuration) < Number.EPSILON) {
                         this.setState({ currWord: -1 })
                         this.wordIndex = 0;
@@ -153,6 +165,7 @@ export default class Karaoke extends React.Component {
             }
 
         } else {
+            // empty everything when the end of the transcript has been reached
             this.line = [];
             this.setState({ currWord: null })
         }
@@ -164,6 +177,7 @@ export default class Karaoke extends React.Component {
 
         var audioEvent;
         var buttonText;
+        // change the text in the audio button depending on its state
         if (this.state.playing) {
             audioEvent = this.pauseAudio;
             buttonText = "Pause";

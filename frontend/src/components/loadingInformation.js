@@ -5,8 +5,10 @@ import "bootstrap/dist/css/bootstrap.css";
 export default class loadingInformation extends React.PureComponent {
 
     render () {
+        // render the loading animation when the fetch is ready
         if (this.props.ready) {
             if (!this.props.done) {
+                // render the proper animation depending on the state of the fetch
                 if (!this.props.error) {
                     return (
                         <React.Fragment>

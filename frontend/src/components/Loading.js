@@ -60,6 +60,7 @@ export default class Loading extends React.Component {
 
 
     componentDidMount() {
+        // fetch the files from the backend
         this.fetchLyricsOrAudio("lyrics")
             .then(response => {
                 if (response.status === 200) {
@@ -71,6 +72,8 @@ export default class Loading extends React.Component {
                 }
             })
             .then((text) => {
+                // split the transcript into a list of lines and remove all 
+                // empty lines
                 var wordLst = text.split('\n');
                 for (var i = wordLst.length - 1; i >= 0; i--) {
                     if (wordLst[i] === "") {
@@ -111,14 +114,15 @@ export default class Loading extends React.Component {
 
             })
             .catch(error => {
-
+                // update the loading icons depending on which fetch returned
+                // and error
                 this.setState({
                     lyricsError: this.state.lyricsDone ? false : true,
                     audioError: this.state.audioDone ? false : true,
                     alignerError: this.state.alignerDone ? false : true,
                     errorMessage: error.message
                 })
-
+                // go back to the home page
                 setTimeout(() => {
                     this.props.history.goBack();
                 }, 3500)

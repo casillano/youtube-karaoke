@@ -22,6 +22,7 @@ class HomePage extends Component {
         this.setState({youtubeLink: e.target.value});
     }
 
+    // Retrive the youtube video ID from the url
     _youtubeParser(url) {
         var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
         var match = url.match(regExp);
@@ -36,6 +37,7 @@ class HomePage extends Component {
             if (!videoId) {
                 this.setState({error: "Invalid youtube link"});
             } else {
+                // Get video information using the video ID
                 fetch("https://www.googleapis.com/youtube/v3/videos?part=id,snippet" +
                 `&id=${videoId}&key=${key}`)
                 .then((response) => response.json())

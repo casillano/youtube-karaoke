@@ -25,7 +25,6 @@ router.post("/", function (req, res, next) {
         } else {
             var fields = info.title.split('-');
             var artist = sanitizeArtistOrTitle(fields[0].trim()).replace(/'|,|\./g, '');
-            // TODO: handle possibility of - in artist/song name
             var title = sanitizeArtistOrTitle(fields[1].trim()).replace(/'|,|\./g, '');
 
             const options = {
@@ -80,7 +79,7 @@ router.post("/", function (req, res, next) {
 })
 
 
-
+// remove unnecessary tags from lyrics e.g. [Chorus]
 function sanitizeLyrics(lyrics) {
     var regexp = /\[[\w ]*\]/g;
     return lyrics.replace(regexp, '');
