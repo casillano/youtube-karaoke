@@ -89,7 +89,7 @@ class HomePage extends Component {
                     <p id="infoSection"> For usage and issues, check out the github repo<br></br>
                     <a target="_blank" rel="noopener noreferrer" 
                     href="https://github.com/casillano/youtube-karaoke">
-                        <img alt="github link" src='./ghlogo.png' width="100px" height="30px"></img>
+                        <img alt="github link" src={process.env.PUBLIC_URL + '/ghlogo.png'} width="100px" height="30px"></img>
                     </a>
                     </p>
                 </div>
