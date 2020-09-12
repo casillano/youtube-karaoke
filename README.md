@@ -28,7 +28,7 @@ If you are using the docker image, run
 const geniusKey = 'API_KEY_HERE';
 const pathToffmpeg = 'PATH_TO_FFMPEG_HERE'
 exports.geniusKey = geniusKey;
-exports.pathToFfmpeg = pathToffmpeg
+exports.pathToFfmpeg = pathToffmpeg;
 ```
 
 3. Get a [Youtube Data API v3 key](https://console.developers.google.com). Navigate to `/frontend/src/secrets`, create `secrets.js`, and paste the following:
