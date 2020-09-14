@@ -15,7 +15,7 @@
     "genius-lyrics-api": "^3.0.3",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "pug": "^3.0.0",
     "youtube-dl": "^3.0.2"
   },
