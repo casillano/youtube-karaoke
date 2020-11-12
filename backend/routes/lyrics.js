@@ -6,15 +6,16 @@ const geniusLyrics = require('genius-lyrics-api').getLyrics;
 const geniusSong = require('genius-lyrics-api').getSong;
 const fsPromise = require('fs').promises;
 const geniusKey = require('../secrets/secrets').geniusKey;
+const fs = require('fs');
 
 router.post("/", function (req, res, next) {
     req.on('close', function(err) {
-        if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
-            fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
-        }
-        if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
-            fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
-        }
+        // if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
+        //     fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
+        // }
+        // if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
+        //     fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
+        // }
     })
     var url = req.body.url;
     youtubedl.getInfo(url, function (err, info) {

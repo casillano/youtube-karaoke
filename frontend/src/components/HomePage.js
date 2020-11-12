@@ -45,7 +45,7 @@ class HomePage extends Component {
                     if (data.items.length) {
                         // video exists, check if title matches required format
                         var title = data.items[0].snippet.title;
-                        var titleRegExp = /[\w ]+ ?- ?[\w]+/;
+                        var titleRegExp = /[\w ]+ ?- ?[\w ]+/;
                         if (titleRegExp.test(title)) {
                             // title matches required format, send api requests on next page
                             this.setState({error: ""});

@@ -8,12 +8,12 @@ const pathToFfmpeg = require('../secrets/secrets').pathToFfmpeg;
 router.post('/', function(req, res) {
     // delete files if request closes (e.g. due to browser exit)
     req.on('close', function(err) {
-        if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
-            fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
-        }
-        if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
-            fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
-        }
+        // if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
+        //     fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
+        // }
+        // if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
+        //     fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
+        // }
     })
     var url = req.body.url;
     // convert youtube video to mp3 and download
