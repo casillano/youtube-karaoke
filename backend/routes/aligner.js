@@ -5,12 +5,15 @@ const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs');
 
-router.post("/", function(req, res) {
+var id;
+
+router.post("/:id", function(req, res) {
     req.on('close', deleteFiles);
+    id = req.params.id;
     var data = FormData();
     // append files to form data 
-    data.append("audio", fs.createReadStream("./aux_files/song.mp3"));
-    data.append("transcript", fs.createReadStream("./aux_files/words.txt"));
+    data.append("audio", fs.createReadStream(`./aux_files/${id}.mp3`));
+    data.append("transcript", fs.createReadStream(`./aux_files/${id}.txt`));
         fetch("http://localhost:8765/transcriptions?async=false", {
             body: data,
             method: "post"
@@ -35,11 +38,11 @@ router.post("/", function(req, res) {
     });
 
 function deleteFiles() {
-    if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
-        fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
+    if (fs.existsSync(path.join(__dirname, "../aux_files", `${id}.txt`))) {
+        fs.unlinkSync(path.join(__dirname, "../aux_files", `${id}.txt`))
     }
-    if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
-        fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
+    if (fs.existsSync(path.join(__dirname, "../aux_files", `${id}.mp3`))) {
+        fs.unlinkSync(path.join(__dirname, "../aux_files", `${id}.mp3`))
     }
 }
 

@@ -6,6 +6,7 @@ import * as doneLoading from "../animations/done.json";
 import * as errorLoading from "../animations/error.json";
 import LoadingInformation from "./loadingInformation";
 import { Redirect } from "react-router-dom";
+import uuid from "react-uuid";
 
 // options for the animations
 const loadingAnimationOptions = {
@@ -46,20 +47,19 @@ export default class Loading extends React.Component {
             alignerDone: false,
             alignerError: false,
             doneAll: false,
-            errorMessage: ""
+            errorMessage: "",
         }
-
+        this.uuid = uuid();
         this.audio = null;
         this.transcript = null;
         this.alignedText = null;
         this.controller = new AbortController();
-
-
         this.fetchLyricsOrAudio = this.fetchLyricsOrAudio.bind(this);
     }
 
 
     componentDidMount() {
+
         // fetch the files from the backend
         this.fetchLyricsOrAudio("lyrics")
             .then(response => {
@@ -129,16 +129,15 @@ export default class Loading extends React.Component {
             })
     }
 
-
     async fetchAligner() {
-        var response = await fetch('http://localhost:9000/api/aligner', {
+        var response = await fetch(`http://localhost:9000/api/aligner/${this.uuid}`, {
             method: 'POST'
         })
         return response;
     }
 
     async fetchLyricsOrAudio(option) {
-        var response = await fetch(`http://localhost:9000/api/${option}`, {
+        var response = await fetch(`http://localhost:9000/api/${option}/${this.uuid}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

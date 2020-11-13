@@ -8,15 +8,7 @@ const fsPromise = require('fs').promises;
 const geniusKey = require('../secrets/secrets').geniusKey;
 const fs = require('fs');
 
-router.post("/", function (req, res, next) {
-    req.on('close', function(err) {
-        // if (fs.existsSync(path.join(__dirname, "../aux_files", "words.txt"))) {
-        //     fs.unlinkSync(path.join(__dirname, "../aux_files", "words.txt"))
-        // }
-        // if (fs.existsSync(path.join(__dirname, "../aux_files", "song.mp3"))) {
-        //     fs.unlinkSync(path.join(__dirname, "../aux_files", "song.mp3"))
-        // }
-    })
+router.post("/:id", function (req, res, next) {
     var url = req.body.url;
     youtubedl.getInfo(url, function (err, info) {
         // handle errors here
@@ -61,15 +53,16 @@ router.post("/", function (req, res, next) {
         }
     })
 }, function (req, res) {
+    var id = req.params.id;
     console.log(__dirname);
     geniusLyrics(req.options)
         .then(lyrics => sanitizeLyrics(lyrics))
-        .then(sanitizedLyrics => fsPromise.writeFile("./aux_files/words.txt",
+        .then(sanitizedLyrics => fsPromise.writeFile(`./aux_files/${id}.txt`,
             sanitizedLyrics.toString()))
         .then(console.log("written to file"))
         .then(
             setTimeout(() => {
-                res.status(200).sendFile(path.join(__dirname, "../aux_files", "words.txt"),
+                res.status(200).sendFile(path.join(__dirname, "../aux_files", `${id}.txt`),
                     { headers: { 'Content-Type': 'text/plain' } })
             }, 2500)
         )

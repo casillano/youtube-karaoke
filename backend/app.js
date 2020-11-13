@@ -25,10 +25,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-
-app.use('/api/lyrics', lyrics);
-app.use('/api/aligner', aligner);
-app.use('/api/audio', audio);
+app.use('/api/lyrics/', lyrics);
+app.use('/api/aligner/', aligner);
+app.use('/api/audio/', audio);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

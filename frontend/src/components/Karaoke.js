@@ -20,7 +20,7 @@ export default class Karaoke extends React.Component {
         // index for aligned words json
         this.index = 0;
         // index for current line in transcript
-        this.index2 = 0;
+        this.lineIndex = 0;
         // index for current word in the current line
         this.wordIndex = 0;
         this.line = [];
@@ -38,7 +38,7 @@ export default class Karaoke extends React.Component {
     playing() {
         if (!this.state.started) {
             // set the start time in order to calculate time passed
-            this.setState({ startTime: Date.now() });
+            this.setState({ startTime: Date.now(), started: true});
         }
         var delay = this.state.remainingTime;
         // set a timeout to make up for the remaining time from when the audio was
@@ -82,7 +82,7 @@ export default class Karaoke extends React.Component {
             playing: false
         });
         this.index = 0;
-        this.index2 = 0;
+        this.lineIndex = 0;
         this.wordIndex = 0;
         this.line = [];
         this.videoRef.current.pause();
@@ -116,8 +116,8 @@ export default class Karaoke extends React.Component {
 
     karaokeText() {
         // check if the end of the transcript has been reached
-        if (this.index2 < this.props.location.state.transcript.length) {
-            this.line = this.props.location.state.transcript[this.index2];
+        if (this.lineIndex < this.props.location.state.transcript.length) {
+            this.line = this.props.location.state.transcript[this.lineIndex];
             // check if the duration of the previous page has ended
             if (this.state.prevWordFinished) {
                 var wordInfo = this.props.location.state.alignedText[this.index];
@@ -132,8 +132,6 @@ export default class Karaoke extends React.Component {
                 } else {
                     // word wasn't aligned, so highlight immediately and move on
                     // to the next word
-                    console.log(this.line[this.wordIndex]);
-                    console.log(this.index2)
                     this.setState({ currWord: this.wordIndex });
                     this.index += 1;
                     this.wordIndex += 1;
@@ -147,7 +145,7 @@ export default class Karaoke extends React.Component {
 
             // check if the last word of the current line has been reached and
             // move onto the next line of the transcript
-            if (this.wordIndex >= this.line.length) {
+            if (this.wordIndex === this.line.length) {
                 var lastWord = this.props.location.state.alignedText[this.index - 1];
                 // on successful alignment, wait until the last word has ended
                 // before moving onto the next line
@@ -155,12 +153,12 @@ export default class Karaoke extends React.Component {
                     if ((lastWord.end - this.state.currentDuration) < Number.EPSILON) {
                         this.setState({ currWord: -1 })
                         this.wordIndex = 0;
-                        this.index2 += 1;
+                        this.lineIndex += 1;
                     }
                 } else {
                     this.setState({ currWord: -1 })
                     this.wordIndex = 0;
-                    this.index2 += 1;
+                    this.lineIndex += 1;
                 }
             }
 
@@ -171,7 +169,6 @@ export default class Karaoke extends React.Component {
         }
 
     }
-
 
     render() {
 
