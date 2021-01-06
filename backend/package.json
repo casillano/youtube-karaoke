@@ -12,7 +12,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "form-data": "^3.0.0",
-    "genius-lyrics-api": "^3.0.3",
+    "genius-lyrics-api": "^3.0.4",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "node-fetch": "^2.6.1",
