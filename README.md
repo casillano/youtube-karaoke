@@ -1,6 +1,6 @@
 # youtube-karaoke
 
-![](karaoke.mp4)
+![](karaoke2.gif)
 
 # Introduction
 This web app takes a youtube url and creates a karaoke experience from it. This is achieved using a variety of APIs to retrieve audio, lyrics, and align the lyrics with the audio.
